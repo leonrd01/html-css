@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="imagens/Iconsmind-Outline-Leo-2.24.png" type="image/x-icon">
+    <title>Tags e muito mais</title>
+    
+</head>
+<body>
+
+    <h1>Estudo HTML</h1>
+    <hr> 
+        <ol>
+            <li>
+                <h2>Sêmantica (tipos de textos)</h2>
+            </li>
+             <ul>
+                 <li>
+                     <h3>Endereços</h3>
+                 </li>
+                     <p><pre><code>     &lt;adress&gt; &lt;/adress&gt;      </code></pre></p>
+                 <br>
+                 <li>
+                     <h3>Mudar cor do background da pagina</h3>
+                 </li>
+    <p><pre><code>
+        &lt;style&gt;
+            body {
+                background - color:
+            }
+        &lt;/style&gt;
+    </code></pre></p>
+                     <p>obs: esta tag vai dentro do head do código</p>
+                 <br>
+                 <li>
+                     <h3>Texto em negrito</h3>
+                 </li>
+                 <p><pre><code>    &lt;b&gt; &lt;/b&gt;   </code></pre></p>
+                 <p>Exemplo: <b>texto em negrito</b> </p>
+                      <hr>
+             </ul>  
+                 <li>
+                     <h2>Listas</h2>
+                 </li>
+             <ul>
+                 <li>
+                     <h3>Listas ordenadas</h3>
+                 </li>
+    <p><pre><code>
+        &lt;ol&gt;
+            &lt;li&gt; item1 &lt;/li&gt;
+            &lt;li&gt; item2 &lt;/li&gt;
+            &lt;li&gt; item3 &lt;/li&gt;
+        &lt;/ol&gt;
+    </code></pre></p>
+                 <br>
+                 <li>
+                     <h3>Listas não ordenadas</h3>
+                 </li>
+    <p><pre><code>
+        &lt;ul&gt;
+            &lt;li&gt; item1 &lt;/li&gt;
+            &lt;li&gt; item2 &lt;/li&gt;
+            &lt;li&gt; item3 &lt;/li&gt;
+        &lt;/ul&gt;
+    </code></pre></p>
+             </ul>
+                <hr>
+                <li>
+                    <h2>Links</h2>
+                </li>
+                <ul>
+                    <li>
+                        <h3>Links externos</h3>
+                    </li>
+                    <p><pre><code>  &lt;a href=""&gt; texto &lt;/a&gt; </code></pre></p>
+                    <p>Exemplo prático: <a href="https://www.linkedin.com/in/leonardo-pinho-dos-santos-ba47682b7/">acesse meu perfil do LinkedIn aqui</a></p>
+                    <p><b>obs: assim ele sobscreve seu site, para abrir outra aba no navegador e não sobscrever seu site, use:</b></p>
+                    <p><pre><code>  &lt;a href="" target="_blank" rel="external"&gt; texto &lt;/a&gt; </code></pre></p>
+                    <p>Exemplo prático: <a href="https://www.linkedin.com/in/leonardo-pinho-dos-santos-ba47682b7/" target="_blank" rel="external">acesse eu perfil do LinkedIn aqui</a></p>
+                    <li>
+                        <h3>Links internos</h3>
+                    </li>
+                    <p><pre><code>  &lt;a href=""&gt; Texto &lt;/a&gt; </code></pre></p>
+                    <p><b>Para dizer ao google que a pagina é do mesmo site use: </b></p>
+                    <p><pre><code> &lt;a href="" rel="next"&gt; Texto &lt;/a&gt; </code></pre></p>
+                    <p>Exemplo Prático: <a href="pag002.html" rel="next">Acesse a pagina 002 aqui</a><p>
+                
+                </ul>
+                <hr>
+                <li> 
+                    <h2>Downloads</h2>
+                </li>
+                
+                <p> <a href="Livro/10 - Ligações em toda parte.pdf" target="_blank" download="Ligações em toda parte.pdf">baixar PDF sobre Links</a></p>
+                <hr>
+                <li>
+                    <h2>Favicon</h2>
+                </li>
+                <ul>
+                    <li>
+                        <h3><b>Mudando o favicon</b></h3>
+                    </li>
+                </ul>
+    <p><pre><code> 
+      &lt;link rel="shortcut icon" href="imagens/Iconsmind-Outline-Leo-2.24.png" type="image/x-icon"&gt;                
+    </code></pre> </p>
+                <hr>
+                <li>
+                    <h2>Imagens e Vídeos</h2>
+                </li>
+                <ul>
+                    <li>
+                        <h3>Colocando imagens</h3>
+                    </li>
+                </ul>
+                <picture>
+                    <source media="(max-width: 750)" srcset="imagens/img-p.png" type="image/png">
+                    <source media="(max-width:1050 )" srcset="imagens/img-m.png" type="image/png">
+                    <img src="imagens/img-g.png" width="150" height="150" alt="Imagem Grande">
+                </picture>
+                <ul>
+                    <li>
+                        <h3>Colocando vídeos</h3>
+                    </li>
+                </ul>
+                <video
+                    src="videos/12129338_960_540_30fps.mp4" 
+                    height="250" width="250" 
+                    controls>
+                </video>
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </ol>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
