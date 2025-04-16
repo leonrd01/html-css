@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Científica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .calculator {
+            background-color: #333333;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            padding: 20px;
+        }
+        
+        .display-container {
+            background-color: #FFFFFF;
+            border: 2px solid #DDDDDD;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        
+        .operation {
+            font-size: 16px;
+            color: #777777;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .result {
+            font-size: 24px;
+            height: 30px;
+            overflow: hidden;
+            color: #FF0000; /* Vermelho para mensagens de erro */
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        button {
+            background-color: #FF6B00;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #E55F00;
+        }
+        
+        button.operator {
+            background-color: #555555;
+        }
+        
+        button.operator:hover {
+            background-color: #444444;
+        }
+        
+        button.clear {
+            background-color: #777777;
+        }
+        
+        button.clear:hover {
+            background-color: #666666;
+        }
+        
+        button.equals {
+            background-color: #FF6B00;
+            grid-column: span 2;
+        }
+        
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #FFFFFF;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display-container">
+            <div class="operation" id="operation"></div>
+            <div class="result" id="result">0</div>
+        </div>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="handleOperator('/')">/</button>
+            <button class="operator" onclick="handleOperator('*')">×</button>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="handleOperator('-')">-</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="handleOperator('+')">+</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="equals" onclick="performCalculation()">=</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+        </div>
+        <footer>
+            Desenvolvido por Tárcio Caetano, Léo Pinho, Léo Neves e Brisa Nzinga
+        </footer>
+    </div>
+
+    <script>
+        let currentDisplay = '0';
+        let firstOperand = null;
+        let operator = null;
+        let waitingForSecondOperand = false;
+        let operationString = '';
+        
+        const resultDisplay = document.getElementById('result');
+        const operationDisplay = document.getElementById('operation');
+        
+        function updateDisplays() {
+            resultDisplay.textContent = currentDisplay;
+            operationDisplay.textContent = operationString;
+        }
+        
+        function appendToDisplay(value) {
+            if (waitingForSecondOperand) {
+                currentDisplay = value;
+                waitingForSecondOperand = false;
+                operationString += ' ' + currentDisplay;
+            } else {
+                currentDisplay = currentDisplay === '0' && value !== '.' ? value : currentDisplay + value;
+            }
+            updateDisplays();
+        }
+        
+        function clearDisplay() {
+            currentDisplay = '0';
+            firstOperand = null;
+            operator = null;
+            waitingForSecondOperand = false;
+            operationString = '';
+            resultDisplay.style.color = ''; // Resetar cor para padrão
+            updateDisplays();
+        }
+        
+        function handleOperator(nextOperator) {
+            // Se já houver um erro, não permitir continuar operações
+            if (currentDisplay === 'ERRO') return;
+            
+            const inputValue = parseFloat(currentDisplay);
+            
+            if (firstOperand === null) {
+                firstOperand = inputValue;
+                operationString = currentDisplay + ' ' + nextOperator;
+            } else if (operator) {
+                const result = calculate(firstOperand, inputValue, operator);
+                if (isNaN(result)) {
+                    showError();
+                    return;
+                }
+                currentDisplay = String(result);
+                firstOperand = result;
+                operationString = currentDisplay + ' ' + nextOperator;
+                updateDisplays();
+            }
+            
+            waitingForSecondOperand = true;
+            operator = nextOperator;
+        }
+        
+        function performCalculation() {
+            if (operator === null || waitingForSecondOperand) return;
+            
+            const inputValue = parseFloat(currentDisplay);
+            
+            if (operator === '/' && inputValue === 0) {
+                showError("Não é possível dividir por zero!");
+                return;
+            }
+            
+            const result = calculate(firstOperand, inputValue, operator);
+            
+            if (isNaN(result)) {
+                showError();
+                return;
+            }
+            
+            operationString = firstOperand + ' ' + operator + ' ' + currentDisplay + ' =';
+            currentDisplay = String(result);
+            firstOperand = null;
+            operator = null;
+            waitingForSecondOperand = false;
+            updateDisplays();
+        }
+        
+        function calculate(firstNum, secondNum, op) {
+            switch (op) {
+                case '+':
+                    return firstNum + secondNum;
+                case '-':
+                    return firstNum - secondNum;
+                case '*':
+                    return firstNum * secondNum;
+                case '/':
+                    return firstNum / secondNum;
+                default:
+                    return secondNum;
+            }
+        }
+
+        function showError(message) {
+            currentDisplay = 'ERRO';
+            operationString = message || 'Operação inválida';
+            resultDisplay.style.color = '#FF0000'; // Texto vermelho para erro
+            firstOperand = null;
+            operator = null;
+            waitingForSecondOperand = false;
+            updateDisplays();
+        }
+
+        // Adicionando suporte ao teclado
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            // Se houver erro, apenas permitir limpar
+            if (currentDisplay === 'ERRO' && key !== 'Escape' && key !== 'Backspace' && key !== 'c' && key !== 'C') {
+                return;
+            }
+            
+            // Números
+            if (/[0-9]/.test(key)) {
+                appendToDisplay(key);
+                return;
+            }
+            
+            // Operadores
+            if (['+', '-', '*', '/'].includes(key)) {
+                handleOperator(key);
+                return;
+            }
+            
+            // Ponto decimal
+            if (key === '.') {
+                appendToDisplay('.');
+                return;
+            }
+            
+            // Enter ou = para calcular
+            if (key === 'Enter' || key === '=') {
+                performCalculation();
+                return;
+            }
+            
+            // Backspace para limpar
+            if (key === 'Backspace') {
+                clearDisplay();
+                return;
+            }
+            
+            // Escape para limpar
+            if (key === 'Escape') {
+                clearDisplay();
+                return;
+            }
+            
+            // Permitir outros caracteres (letras, símbolos, etc.)
+            if (key.length === 1 && !['Shift', 'Control', 'Alt', 'Meta', 'CapsLock'].includes(key)) {
+                appendToDisplay(key);
+            }
+        });
+    </script>
+</body>
+</html>
